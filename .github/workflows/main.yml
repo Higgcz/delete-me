@@ -7,13 +7,26 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout source files
+        uses: actions/checkout@v2
         with:
-          fetch-depth: 1
-      - uses: actions/setup-python@v2
+          fetch-depth: 0
+
+      - name: Set up Python 🐍
+        uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - run: pip install .[doc]
-      - run: git config user.name ci-bot && git config user.email ci-bot@example.com
-#       - run: git fetch origin gh-pages --depth=1
-      - run: mike deploy --push --rebase --update-aliases ${{ github.ref_name }} latest
+          architecture: x64    
+          cache: 'pip'     
+          cache-dependency-path: 'setup.cfg'
+                  
+      - name: Install Python dependencies
+        run: pip install .[doc]
+
+      - name: Configure Git user
+        run: |
+          git config --local user.name "github-actions[bot]"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+ 
+      - name: Deploy with mike 🚀
+        run: mike deploy --push --rebase --update-aliases ${{ github.ref_name }} latest
