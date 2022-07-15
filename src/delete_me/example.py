@@ -4,6 +4,7 @@ Example of a Python Module calculating N-th Fibonacci number.
 
 __all__ = ["fib"]
 
+
 def fib(n: int) -> int:
     """Calculate N-th Fibonacci number.
 
