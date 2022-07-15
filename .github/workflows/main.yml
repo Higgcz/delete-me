@@ -1,8 +1,8 @@
 name: build
 on:
   push:
-    branches:
-      - main
+    tags:        
+      - v*
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -13,4 +13,4 @@ jobs:
           python-version: 3.9
       - run: pip install .[doc]
       - run: git config user.name ci-bot && git config user.email ci-bot@example.com
-      - run: mike deploy --push --update-aliases ${{ github.sha }} latest
+      - run: mike deploy --push --update-aliases ${{ github.ref_name }} latest
